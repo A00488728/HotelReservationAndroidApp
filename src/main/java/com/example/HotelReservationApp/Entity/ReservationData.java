@@ -13,6 +13,7 @@ public class ReservationData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String confirmationNumber;
     private String name;
     private String email;
     private String gender;
@@ -25,9 +26,14 @@ public class ReservationData {
     public ReservationData() {
     }
 
-    public ReservationData(String name, String email) {
-        this.name = name;
+    public ReservationData(String confirmationNumber, String name, String email, String gender, int guestNumber, LocalDate checkoutDate, LocalDate checkinDate) {
+        this.confirmationNumber = confirmationNumber;
+    	this.name = name;
         this.email = email;
+        this.gender = gender;
+        this.guestNumber = guestNumber;
+        this.checkoutDate = checkoutDate;
+        this.checkinDate = checkinDate;
     }
 
     // Getters and Setters
@@ -38,7 +44,14 @@ public class ReservationData {
     public void setId(Long id) {
         this.id = id;
     }
+    
+	public String getConfirmationNumber() {
+		return confirmationNumber;
+	}
 
+	public void setConfirmationNumber(String confirmationNumber) {
+		this.confirmationNumber = confirmationNumber;
+	}
     public String getName() {
         return name;
     }
