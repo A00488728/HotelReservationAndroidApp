@@ -13,9 +13,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+
 public class HotelList extends AppCompatActivity {
 
     ListView listView;
+    ArrayList<Hotel> hotelarraylist;
+    private static MyCustomAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +29,21 @@ public class HotelList extends AppCompatActivity {
         // Find the ListView by ID
         listView = findViewById(R.id.HotelList);
 
+        hotelarraylist = new ArrayList<>();
+
         // Sample data for the ListView
-        String[] hotels = {"Hotel 1", "Hotel 2", "Hotel 3", "Hotel 4", "Hotel 5"};
+        Hotel hotel1 = new Hotel("Halifax Hotel", "Halifax", "$123", "Available", "123km");
+        Hotel hotel2 = new Hotel("Halifax Hotel", "Halifax", "$123", "Available", "123km");
+        Hotel hotel3 = new Hotel("Halifax Hotel", "Halifax", "$123", "Available", "123km");
+
+        hotelarraylist.add(hotel1);
+        hotelarraylist.add(hotel2);
+        hotelarraylist.add(hotel3);
+
 
         // Create an ArrayAdapter to bind the data to the ListView
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, hotels);
 
+        adapter = new MyCustomAdapter(hotelarraylist, getApplicationContext());
         // Set the adapter to the ListView
         listView.setAdapter(adapter);
 
