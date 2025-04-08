@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:id="@+id/scrollView">
+
+    <!-- LinearLayout or any other layout you want to use as a child -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Add your views here, such as TextViews, Buttons, etc. -->
+        <ImageView
+            android:id="@+id/Wallpaper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/app_wallpaper" />
+
+        <TextView
+            android:id="@+id/Header1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="cursive"
+            android:text="Book With Us"
+            android:layout_gravity="center_horizontal"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/enterCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Enter Destination"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="@style/HintTextStyle"
+            android:layout_marginTop="30dp"/>
+
+        <EditText
+            android:id="@+id/enterNumberOfGuest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:text="Enter Number of Guest"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="@style/HintTextStyle"
+            android:layout_marginTop="30dp" />
+
+        <DatePicker
+            android:id="@+id/checkindate"
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:calendarViewShown="true" />
+
+        <DatePicker
+            android:id="@+id/checkoutdate"
+            android:layout_marginTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:calendarViewShown="true" />
+
+
+
+        <Button
+            android:id="@+id/HotelSearch"
+            style="@style/CustomButtonStyle"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:text="Search Hotel"
+            android:layout_gravity="center_horizontal"/>
+        <!-- You can continue adding more UI components -->
+
+    </LinearLayout>
+</android.widget.ScrollView>

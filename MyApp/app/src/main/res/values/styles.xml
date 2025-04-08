@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomButtonStyle" parent="Widget.AppCompat.Button">
+        <item name ="android:layout_width">wrap_content</item>
+        <item name ="android:layout_height">wrap_content</item>
+        <item name="backgroundTint">#00ACC1</item>
+        <item name="backgroundTintMode">src_over</item>
+        <item name="fontFamily">casual</item>
+    </style>
+
+    <style name="HintTextStyle">
+        <item name="android:textColorHint">#7F8C8D</item>  <!-- Set your hint color here -->
+        <item name="android:textSize">16sp</item>  <!-- Set your hint text size -->
+        <item name="android:fontFamily">serif</item>  <!-- Set your custom font -->
+    </style>
+
+
+
+</resources>

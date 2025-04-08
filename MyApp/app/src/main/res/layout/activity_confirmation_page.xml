@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- TextView to display a label -->
+    <TextView
+        android:id="@+id/Header4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:fontFamily="cursive"
+        android:text="Book With Us"
+        android:layout_gravity="center_horizontal"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/confirmationNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:fontFamily="serif"
+        android:text="Your confirmation number is "
+        android:layout_gravity="center_horizontal"
+        android:textSize="20sp" />
+
+    <!-- Button to perform action -->
+    <Button
+        android:id="@+id/Return"
+        style="@style/CustomButtonStyle"
+        android:layout_marginTop="10dp"
+        android:text="Return to the Home page"
+        android:layout_gravity="center_horizontal"/>
+
+</LinearLayout>
