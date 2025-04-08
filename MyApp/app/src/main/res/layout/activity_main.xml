@@ -23,11 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:fontFamily="cursive"
-            android:text="Book With Us"
-            android:layout_gravity="center_horizontal"
-            android:textSize="50sp"
-            android:textStyle="bold" />
+            style="@style/HeaderTextStyle" />
 
         <EditText
             android:id="@+id/enterCity"

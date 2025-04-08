@@ -8,6 +8,15 @@
         <item name="fontFamily">casual</item>
     </style>
 
+    <style name="HeaderTextStyle">
+        <item name="android:text">Book With Us</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:textColorHint">#7F8C8D</item>  <!-- Set your hint color here -->
+        <item name="android:textSize">50sp</item>  <!-- Set your hint text size -->
+        <item name="android:fontFamily">cursive</item>  <!-- Set your custom font -->
+    </style>
+
     <style name="HintTextStyle">
         <item name="android:textColorHint">#7F8C8D</item>  <!-- Set your hint color here -->
         <item name="android:textSize">16sp</item>  <!-- Set your hint text size -->

@@ -52,8 +52,8 @@ public class HotelList extends AppCompatActivity {
         bookbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent confirmationPage = new Intent(HotelList.this, ConfirmationPage.class);
-                startActivity(confirmationPage);
+                Intent showGuestList = new Intent(HotelList.this, GuestList.class);
+                startActivity(showGuestList);
             }
         });
 
