@@ -14,9 +14,6 @@ public class ReservationData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String confirmationNumber;
-    private String name;
-    private String email;
-    private String gender;
     private int guestNumber;
     private LocalDate checkoutDate;
     private LocalDate checkinDate;
@@ -26,11 +23,8 @@ public class ReservationData {
     public ReservationData() {
     }
 
-    public ReservationData(String confirmationNumber, String name, String email, String gender, int guestNumber, LocalDate checkoutDate, LocalDate checkinDate) {
+    public ReservationData(String confirmationNumber, int guestNumber, LocalDate checkoutDate, LocalDate checkinDate) {
         this.confirmationNumber = confirmationNumber;
-    	this.name = name;
-        this.email = email;
-        this.gender = gender;
         this.guestNumber = guestNumber;
         this.checkoutDate = checkoutDate;
         this.checkinDate = checkinDate;
@@ -51,29 +45,6 @@ public class ReservationData {
 
 	public void setConfirmationNumber(String confirmationNumber) {
 		this.confirmationNumber = confirmationNumber;
-	}
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
-    public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
 	}
 
 	public int getGuestNumber() {
