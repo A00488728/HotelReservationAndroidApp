@@ -1,6 +1,8 @@
 package com.example.HotelReservationApp.Controller;
 
 import com.example.HotelReservationApp.Entity.AdditionalGuest;
+import com.example.HotelReservationApp.Model.GuestDetails;
+import com.example.HotelReservationApp.Service.GuestDetailsService;
 import com.example.HotelReservationApp.Service.AdditionalGuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,17 +17,25 @@ import java.util.Optional;
 public class AdditionalGuestController {
 
     private final AdditionalGuestService additionalGuestService;
+    private final GuestDetailsService guestDetailsService;
 
     @Autowired
-    public AdditionalGuestController(AdditionalGuestService additionalGuestService) {
+    public AdditionalGuestController(AdditionalGuestService additionalGuestService, GuestDetailsService guestDetailsService) {
         this.additionalGuestService = additionalGuestService;
+        this.guestDetailsService = guestDetailsService;
     }
 
     // 1. Create a new AdditionalGuest
+	/*
+	 * @PostMapping public ResponseEntity<AdditionalGuest> createGuest(@RequestBody
+	 * AdditionalGuest additionalGuest) { AdditionalGuest createdGuest =
+	 * additionalGuestService.createGuest(additionalGuest); return new
+	 * ResponseEntity<>(createdGuest, HttpStatus.CREATED); }
+	 */
     @PostMapping
-    public ResponseEntity<AdditionalGuest> createGuest(@RequestBody AdditionalGuest additionalGuest) {
-        AdditionalGuest createdGuest = additionalGuestService.createGuest(additionalGuest);
-        return new ResponseEntity<>(createdGuest, HttpStatus.CREATED);
+    public void saveInputs(@RequestBody List<GuestDetails> inputs) {
+        //GuestDetailsService guestDetailsService = new GuestDetailsService(null);
+		guestDetailsService.saveInputs(inputs); // Delegate saving to the service layer
     }
 
     // 2. Get all AdditionalGuests
