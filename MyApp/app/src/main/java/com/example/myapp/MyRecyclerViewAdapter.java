@@ -18,6 +18,10 @@ import java.util.List;
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.MyRecyclerViewHolder> {
 
     private List<GuestDetails> itemList;
+
+    public List<GuestDetails> getGuestDetails() {
+        return itemList; // Return the entire list of inputs
+    }
     public MyRecyclerViewAdapter(List<GuestDetails> itemList) {
         this.itemList = itemList;
 
@@ -31,15 +35,15 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     @Override
     public void onBindViewHolder(@NonNull MyRecyclerViewHolder holder, int position) {
         GuestDetails item = itemList.get(position);
-        holder.guestName.setText(item.getGuest_Name());
-        holder.guestMale.setChecked(item.getGuest_Male());
-        holder.guestFemale.setChecked(item.getGuest_Female());
+        holder.guestName.setText(item.getName());
+        holder.guestMale.setChecked(item.getMale());
+        holder.guestFemale.setChecked(item.getFemale());
 
         holder.guestMale.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            item.setGuest_Male(isChecked);
+            item.setMale(isChecked);
         });
         holder.guestFemale.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            item.setGuest_Female(isChecked);
+            item.setFemale(isChecked);
         });
 
         holder.guestName.addTextChangedListener(new TextWatcher() {
@@ -49,7 +53,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
                 // Update the inputText in Item
-                item.setGuest_Name(charSequence.toString());
+                item.setName(charSequence.toString());
             }
 
             @Override
@@ -75,5 +79,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             guestFemale = itemView.findViewById(R.id.radioButton2);
         }
     }
+
 
 }

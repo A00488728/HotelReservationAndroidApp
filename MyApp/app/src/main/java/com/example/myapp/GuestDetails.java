@@ -1,37 +1,37 @@
 package com.example.myapp;
 
 public class GuestDetails {
-    private String Guest_Name;
-    private Boolean Guest_Male;
-    private Boolean Guest_Female;
+    private String name;
+    private Boolean male;
+    private Boolean female;
 
-    public GuestDetails(String guest_Name, Boolean guest_Male, Boolean guest_Female) {
-        Guest_Name = guest_Name;
-        Guest_Male = guest_Male;
-        Guest_Female = guest_Female;
+    public GuestDetails(String name, Boolean male, Boolean female) {
+        this.name = name;
+        this.male = male;
+        this.female = female;
     }
 
-    public String getGuest_Name() {
-        return Guest_Name;
+    public String getName() {
+        return name;
     }
 
-    public void setGuest_Name(String guest_Name) {
-        Guest_Name = guest_Name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Boolean getGuest_Male() {
-        return Guest_Male;
+    public Boolean getMale() {
+        return male;
     }
 
-    public void setGuest_Male(Boolean guest_Male) {
-        Guest_Male = guest_Male;
+    public void setMale(Boolean male) {
+        this.male = male;
     }
 
-    public Boolean getGuest_Female() {
-        return Guest_Female;
+    public Boolean getFemale() {
+        return female;
     }
 
-    public void setGuest_Female(Boolean guest_Female) {
-        Guest_Female = guest_Female;
+    public void setFemale(Boolean female) {
+        this.female = female;
     }
 }

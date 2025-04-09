@@ -2,19 +2,24 @@ package com.example.myapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.myapp.ApiClient;
+import com.example.myapp.ApiInterface;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GuestList extends AppCompatActivity {
 
@@ -25,30 +30,71 @@ public class GuestList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_guest_list);
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         itemList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             // You can set whether each item has its RadioButton selected or not
-            itemList.add(new GuestDetails("Item " + (i + 1), false, false)); // All RadioButtons initially unselected
+            itemList.add(new GuestDetails("", false, false)); // All RadioButtons initially unselected
         }
 
         adapter = new MyRecyclerViewAdapter(itemList);
         recyclerView.setAdapter(adapter);
 
         Button submitbtn = findViewById(R.id.submit);
-
         submitbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent showGuestList = new Intent(GuestList.this, ConfirmationPage.class);
-                startActivity(showGuestList);
+            public void onClick(View view) {
+                Log.d("GuestList", "Submit button clicked");
+
+                // Get guest details from the adapter
+                List<GuestDetails> inputs = adapter.getGuestDetails();
+                Log.d("GuestList", "Guest details retrieved: " + inputs.size() + " items");
+
+                // For debugging: Show the first and last names (if needed)
+                if (!inputs.isEmpty()) {
+                    Log.d("GuestList", "First guest name: " + inputs.get(0).getName());
+                    Log.d("GuestList", "Last guest name: " + inputs.get(inputs.size() - 1).getName());
+                }
+
+                // Call the method to save data
+                saveGuestDetails(inputs);
             }
         });
+    }
 
+    // Method to save guest details to the server
+    private void saveGuestDetails(List<GuestDetails> input) {
+        Log.d("GuestList", "Starting API call to save guest details");
 
+        ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+        Call<Void> call = apiInterface.saveInputs(input);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("GuestList", "API call response received");
+
+                if (response.isSuccessful()) {
+                    Log.d("GuestList", "Data saved successfully");
+                    Toast.makeText(GuestList.this, "Data saved successfully", Toast.LENGTH_SHORT).show();
+                    // Navigate to the confirmation page
+                    Intent showGuestList = new Intent(GuestList.this, ConfirmationPage.class);
+                    startActivity(showGuestList);
+                } else {
+                    Log.d("GuestList", "Failed to save data, response code: " + response.code());
+                    Toast.makeText(GuestList.this, "Failed to save data", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("GuestList", "API call failed", t);
+                Toast.makeText(GuestList.this, "Network error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

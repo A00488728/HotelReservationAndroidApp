@@ -13,8 +13,7 @@
         app:layout_goneMarginTop="20dp"
         android:layout_marginLeft="20dp"
         android:ems="20"
-        android:inputType="text"
-        android:text="Enter Name"
+        android:hint="Enter Name"
         android:textAppearance="@style/HintTextStyle"/>
 
     <RadioGroup
