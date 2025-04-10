@@ -36,13 +36,17 @@ public class GuestList extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         itemList = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 10; i++) {
             // You can set whether each item has its RadioButton selected or not
             itemList.add(new GuestDetails("", false, false)); // All RadioButtons initially unselected
         }
 
         adapter = new MyRecyclerViewAdapter(itemList);
         recyclerView.setAdapter(adapter);
+        recyclerView.post(() -> {
+            Log.d("RecyclerView", "Total height: " + recyclerView.getHeight());
+            Log.d("RecyclerView", "Scroll range: " + recyclerView.computeVerticalScrollRange());
+        });
 
         Button submitbtn = findViewById(R.id.submit);
         submitbtn.setOnClickListener(new View.OnClickListener() {
@@ -73,11 +77,7 @@ public class GuestList extends AppCompatActivity {
                     }
                     else
                         validate_done=1;
-
-
                 }
-
-
                 // Call the method to save data
                 if (validate_done==1)
                 {
