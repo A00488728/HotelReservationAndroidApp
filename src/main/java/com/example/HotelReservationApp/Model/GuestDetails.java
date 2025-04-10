@@ -4,16 +4,18 @@ public class GuestDetails {
     private String name;
 	private boolean male;
     private boolean female;
+    private String confirmationNumber;
     
     public GuestDetails() {
     	
     }
     
-	public GuestDetails(String name, boolean male, boolean female) {
+	public GuestDetails(String name, boolean male, boolean female, String confirmationNumber) {
 		super();
 		this.name = name;
 		this.male = male;
 		this.female = female;
+		this.confirmationNumber = confirmationNumber;
 		
 		
 	}
@@ -21,6 +23,7 @@ public class GuestDetails {
 	public String getName() {
 		return name;
 	}
+
 
 	public void setName(String name) {
 		this.name = name;
@@ -40,6 +43,14 @@ public class GuestDetails {
 
 	public void setFemale(boolean female) {
 		this.female = female;
+	}
+	
+	public String getConfirmationNumber() {
+		return confirmationNumber;
+	}
+
+	public void setConfirmationNumber(String confirmationNumber) {
+		this.confirmationNumber = confirmationNumber;
 	}
 	
 	

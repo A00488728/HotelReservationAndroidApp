@@ -5,10 +5,21 @@ public class GuestDetails {
     private Boolean male;
     private Boolean female;
 
-    public GuestDetails(String name, Boolean male, Boolean female) {
+    private String confirmationNumber;
+
+    public String getConfirmationNumber() {
+        return confirmationNumber;
+    }
+
+    public void setConfirmationNumber(String confirmationNumber) {
+        this.confirmationNumber = confirmationNumber;
+    }
+
+    public GuestDetails(String name, Boolean male, Boolean female, String confirmationNumber) {
         this.name = name;
         this.male = male;
         this.female = female;
+        this.confirmationNumber = confirmationNumber;
     }
 
     public String getName() {

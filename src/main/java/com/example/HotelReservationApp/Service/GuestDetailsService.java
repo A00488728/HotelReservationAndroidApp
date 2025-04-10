@@ -30,7 +30,7 @@ public class GuestDetailsService {
             else
             	find_gender="Female";
             inputEntity.setGender(find_gender);
-            inputEntity.setReservationNumber(1234);
+            inputEntity.setReservationNumber(userInput.getConfirmationNumber());
             inputRepository.save(inputEntity);
         }
     }

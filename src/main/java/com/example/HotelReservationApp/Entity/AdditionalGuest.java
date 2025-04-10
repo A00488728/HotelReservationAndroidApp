@@ -12,7 +12,7 @@ public class AdditionalGuest
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private int reservationNumber;
+	private String reservationNumber;
 	private String guestName;
 	private String gender;
 	
@@ -22,12 +22,13 @@ public class AdditionalGuest
 		
 	}
 	
-	public AdditionalGuest(int id, int reservationNumber, String guestName, String gender)
+	public AdditionalGuest(int id, String reservationNumber, String guestName, String gender)
 	{
 		this.id=id;
 		this.reservationNumber=reservationNumber;
 		this.guestName=guestName;
 		this.gender=gender;
+		
 	}
 	
 	//getters and setters
@@ -40,12 +41,10 @@ public class AdditionalGuest
 		this.id = id;
 	}
 
-	public int getReservationNumber() {
+	public String getReservationNumber() {
 		return reservationNumber;
 	}
-	public void setReservationNumber(int reservationNumber) {
-		this.reservationNumber = reservationNumber;
-	}
+
 	public String getGuestName() {
 		return guestName;
 	}
@@ -59,6 +58,11 @@ public class AdditionalGuest
 
 	public void setGuestName(String guestName) {
 		this.guestName = guestName;
+	}
+
+	public void setReservationNumber(String confirmationNumber) {
+		this.reservationNumber = confirmationNumber;
+		
 	}
 	
 	

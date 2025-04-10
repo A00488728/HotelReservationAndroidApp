@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import java.security.SecureRandom;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +27,9 @@ public class GuestList extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MyRecyclerViewAdapter adapter;
     private List<GuestDetails> itemList;
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    private static final int CODE_LENGTH = 10;
+    private static final SecureRandom random = new SecureRandom();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +39,18 @@ public class GuestList extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        StringBuilder sb = new StringBuilder(CODE_LENGTH);
+        for (int i = 0; i < CODE_LENGTH; i++) {
+            int index = random.nextInt(CHARACTERS.length());
+            sb.append(CHARACTERS.charAt(index));
+        }
+
+        String confirmationNumber = sb.toString();
+
         itemList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             // You can set whether each item has its RadioButton selected or not
-            itemList.add(new GuestDetails("", false, false)); // All RadioButtons initially unselected
+            itemList.add(new GuestDetails("", false, false, confirmationNumber)); // All RadioButtons initially unselected
         }
 
         adapter = new MyRecyclerViewAdapter(itemList);
