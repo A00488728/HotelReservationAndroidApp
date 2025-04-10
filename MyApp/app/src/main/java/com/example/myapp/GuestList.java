@@ -49,7 +49,7 @@ public class GuestList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("GuestList", "Submit button clicked");
-
+                int validate_done=0;
                 // Get guest details from the adapter
                 List<GuestDetails> inputs = adapter.getGuestDetails();
                 Log.d("GuestList", "Guest details retrieved: " + inputs.size() + " items");
@@ -60,8 +60,30 @@ public class GuestList extends AppCompatActivity {
                     Log.d("GuestList", "Last guest name: " + inputs.get(inputs.size() - 1).getName());
                 }
 
+                for (GuestDetails guest : inputs)
+                {
+                    if (!guest.getName().matches(("[a-zA-Z]+"))){
+                        Toast.makeText(GuestList.this, "Invalid guest name", Toast.LENGTH_LONG).show();
+                        validate_done=0;
+                        break;
+                    } else if (!guest.getFemale() && !guest.getMale()) {
+                        Toast.makeText(GuestList.this, "Guest gender not entered", Toast.LENGTH_LONG).show();
+                        validate_done=0;
+                        break;
+                    }
+                    else
+                        validate_done=1;
+
+
+                }
+
+
                 // Call the method to save data
-                saveGuestDetails(inputs);
+                if (validate_done==1)
+                {
+                    saveGuestDetails(inputs);
+                }
+
             }
         });
     }
@@ -80,20 +102,20 @@ public class GuestList extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     Log.d("GuestList", "Data saved successfully");
-                    Toast.makeText(GuestList.this, "Data saved successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GuestList.this, "Data saved successfully", Toast.LENGTH_LONG).show();
                     // Navigate to the confirmation page
                     Intent showGuestList = new Intent(GuestList.this, ConfirmationPage.class);
                     startActivity(showGuestList);
                 } else {
                     Log.d("GuestList", "Failed to save data, response code: " + response.code());
-                    Toast.makeText(GuestList.this, "Failed to save data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GuestList.this, "Failed to save data", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.e("GuestList", "API call failed", t);
-                Toast.makeText(GuestList.this, "Network error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GuestList.this, "Network error", Toast.LENGTH_LONG).show();
             }
         });
     }

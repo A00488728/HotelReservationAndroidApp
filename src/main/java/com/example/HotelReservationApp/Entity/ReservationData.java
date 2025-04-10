@@ -15,6 +15,7 @@ public class ReservationData {
     private Long id;
     private String confirmationNumber;
     private int guestNumber;
+    private String hotelName;
     private LocalDate checkoutDate;
     private LocalDate checkinDate;
     
@@ -23,9 +24,10 @@ public class ReservationData {
     public ReservationData() {
     }
 
-    public ReservationData(String confirmationNumber, int guestNumber, LocalDate checkoutDate, LocalDate checkinDate) {
+    public ReservationData(String confirmationNumber, int guestNumber, String hotelName, LocalDate checkoutDate, LocalDate checkinDate) {
         this.confirmationNumber = confirmationNumber;
         this.guestNumber = guestNumber;
+        this.hotelName = hotelName;
         this.checkoutDate = checkoutDate;
         this.checkinDate = checkinDate;
     }
@@ -69,5 +71,13 @@ public class ReservationData {
 
 	public void setCheckinDate(LocalDate checkinDate) {
 		this.checkinDate = checkinDate;
+	}
+
+	public String getHotelName() {
+		return hotelName;
+	}
+
+	public void setHotelName(String hotelName) {
+		this.hotelName = hotelName;
 	}
 }

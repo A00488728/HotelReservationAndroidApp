@@ -1,5 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Define the primary color and primary variant -->
+    <color name="colorPrimary">#BFD641</color> <!-- Purple 500 -->
+    <color name="colorPrimaryVariant">#3700B3</color> <!-- Purple 700 -->
+
+    <!-- Surface and Text Colors -->
+    <color name="colorOnPrimary">#FFFFFF</color> <!-- White for text on primary color -->
+    <color name="colorSurface">#FFFFFF</color> <!-- White for the surface background -->
+    <color name="colorOnSurface">#000000</color> <!-- Black for text on surface -->
 </resources>

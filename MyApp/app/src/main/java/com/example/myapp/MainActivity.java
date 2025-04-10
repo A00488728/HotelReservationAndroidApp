@@ -3,38 +3,80 @@ package com.example.myapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
+import com.google.android.material.datepicker.MaterialDatePicker;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.core.util.Pair;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView listView;
+    Button showRangePicker;
+    TextView selectedRangeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btn = findViewById(R.id.HotelSearch);
-        EditText city_name = findViewById(R.id.enterCity);
-        String city_name_entered = city_name.getText().toString();
-        EditText number_of_guest = findViewById(R.id.enterCity);
-        String number_of_guest_entered = number_of_guest.getText().toString();
+        // Create Material Date Range Picker with custom theme
+        MaterialDatePicker<Pair<Long, Long>> dateRangePicker =
+                MaterialDatePicker.Builder.dateRangePicker()
+                        .setTheme(R.style.CustomMaterialDatePickerTheme2)
+                        .setTitleText("Select Dates")
+                        .build();
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        showRangePicker = findViewById(R.id.showRangePicker);
+        selectedRangeText = findViewById(R.id.selectedRangeText);
+
+        // Show date range picker when button is clicked
+        showRangePicker.setOnClickListener(v -> {
+            dateRangePicker.show(getSupportFragmentManager(), "DATE_RANGE_PICKER");
+        });
+
+        // Handle the selected range
+        dateRangePicker.addOnPositiveButtonClickListener(selection -> {
+            // Format: Apr 9 – Apr 15
+            selectedRangeText.setText("Selected Range: " + dateRangePicker.getHeaderText());
+        });
+        Button btn = findViewById(R.id.HotelSearch);
+
+        btn.setOnClickListener(v -> {
+
+            EditText city_name = findViewById(R.id.enterCity);
+            String city_name_entered = city_name.getText().toString();
+            EditText number_of_guest = findViewById(R.id.enterNumberOfGuest);
+            String number_of_guest_entered = number_of_guest.getText().toString();
+            EditText number_of_rooms = findViewById(R.id.enterNumberOfRooms);
+            String number_of_rooms_entered = number_of_rooms.getText().toString();
+            if (city_name_entered.isBlank() || !city_name_entered.matches("[a-zA-Z]+"))
+            {
+                Toast.makeText(this, "Enter a valid Destination", Toast.LENGTH_LONG).show();
+            }
+            else {
+
+                try{
+                    Integer guests = Integer.parseInt(number_of_guest_entered);
+                }
+                catch (NumberFormatException e)
+                {
+                    Toast.makeText(this, "Invalid Number of Guests", Toast.LENGTH_LONG).show();
+                }
+                try{
+                    Integer rooms = Integer.parseInt(number_of_rooms_entered);
+                }
+                catch (NumberFormatException e)
+                {
+                    Toast.makeText(this, "Invalid Number of Rooms", Toast.LENGTH_LONG).show();
+                }
                 Intent i = new Intent(MainActivity.this, HotelList.class);
                 startActivity(i);
             }
+
         });
     }
 }

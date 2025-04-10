@@ -16,7 +16,7 @@
             android:id="@+id/Wallpaper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/app_wallpaper" />
+            android:src="@drawable/app_wallpaper"/>
 
         <TextView
             android:id="@+id/Header1"
@@ -25,45 +25,81 @@
             android:layout_marginTop="5dp"
             style="@style/HeaderTextStyle" />
 
+        <TextView
+            android:id="@+id/CityHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Desination"
+            style="@style/Header2TextStyle" />
+
         <EditText
             android:id="@+id/enterCity"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:text="Enter Destination"
+            android:hint="e.g, Toronto"
             android:layout_gravity="center_horizontal"
             android:textAppearance="@style/HintTextStyle"
-            android:layout_marginTop="30dp"/>
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:id="@+id/GuestHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Number of Guests"
+            style="@style/Header2TextStyle" />
 
         <EditText
             android:id="@+id/enterNumberOfGuest"
+            android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="text"
-            android:text="Enter Number of Guest"
+            android:inputType="number"
+            android:hint="e.g, 1"
             android:layout_gravity="center_horizontal"
             android:textAppearance="@style/HintTextStyle"
-            android:layout_marginTop="30dp" />
+            android:layout_marginTop="5dp" />
 
-        <DatePicker
-            android:id="@+id/checkindate"
+        <TextView
+            android:id="@+id/RoomHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:text="Number of Rooms"
+            style="@style/Header2TextStyle" />
+
+        <EditText
+            android:id="@+id/enterNumberOfRooms"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:hint="e.g, 1"
+            android:layout_gravity="center_horizontal"
+            android:textAppearance="@style/HintTextStyle"
+            android:layout_marginTop="5dp" />
+
+        <Button
+            android:id="@+id/showRangePicker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:calendarViewShown="true" />
-
-        <DatePicker
-            android:id="@+id/checkoutdate"
             android:layout_marginTop="30dp"
+            android:text="Select Dates" />
+
+        <TextView
+            android:id="@+id/selectedRangeText"
+            android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:calendarViewShown="true" />
-
-
+            android:text="Selected range will appear here" />
 
         <Button
             android:id="@+id/HotelSearch"

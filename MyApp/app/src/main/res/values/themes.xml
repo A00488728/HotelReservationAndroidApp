@@ -1,9 +1,31 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MyApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+<resources>
+    <!-- Light Material theme with minimal styling for the date picker -->
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary color accent -->
+
+    </style>
+    <style name="CustomMaterialDatePickerTheme2" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <!-- Change the selected day background color -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- Optional: change how text or other accents look -->
+        <item name="colorOnPrimary">@android:color/white</item>
     </style>
 
-    <style name="Theme.MyApp" parent="Base.Theme.MyApp" />
+
+    <style name="CustomMaterialDatePickerTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize the primary and surface colors for the DatePicker -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+
+        <item name="colorSurface">@android:color/white</item>
+        <item name="colorOnSurface">@android:color/black</item>
+
+        <!-- Customize button styles or other UI elements if needed -->
+    </style>
+
+    <!-- Light DatePicker Dialog with basic styling -->
 </resources>
+
+
+

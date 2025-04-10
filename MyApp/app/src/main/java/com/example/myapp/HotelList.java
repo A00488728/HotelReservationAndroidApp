@@ -54,6 +54,7 @@ public class HotelList extends AppCompatActivity {
             public void onClick(View v) {
                 Intent showGuestList = new Intent(HotelList.this, GuestList.class);
                 startActivity(showGuestList);
+                finish();
             }
         });
 

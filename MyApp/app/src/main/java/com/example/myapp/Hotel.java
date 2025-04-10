@@ -1,5 +1,7 @@
 package com.example.myapp;
 
+import java.time.LocalDate;
+
 public class Hotel {
     private String Name;
     private String City;
@@ -13,6 +15,7 @@ public class Hotel {
         this.Price=Price;
         this.Availability=Availability;
         this.Distance=Distance;
+
 
     }
 
