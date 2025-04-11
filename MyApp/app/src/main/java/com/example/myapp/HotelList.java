@@ -67,6 +67,8 @@ public class HotelList extends AppCompatActivity {
         String city_received = intentReceived.getStringExtra("city_name_entered");
         int rooms_received = intentReceived.getIntExtra("rooms", 0);
         int guests_received = intentReceived.getIntExtra("guests", 0);
+        String checkinDate = intentReceived.getStringExtra("startDate");
+        String checkoutDate = intentReceived.getStringExtra("endDate");
         Log.d("IntentReceived", "City Received: " + city_received);
         Log.d("IntentReceived", "Rooms Received: " + rooms_received);
         Log.d("IntentReceived", "Guests Received: " + guests_received);
@@ -79,6 +81,8 @@ public class HotelList extends AppCompatActivity {
                 showGuestList.putExtra("city_received", city_received);
                 showGuestList.putExtra("rooms_received", rooms_received);
                 showGuestList.putExtra("guests_received", guests_received);
+                showGuestList.putExtra("startDate", checkinDate);
+                showGuestList.putExtra("endDate", checkoutDate);
                 Log.d("IntentData", "Hotel Selected: " + hotel_selected[0]);
                 Log.d("IntentData", "City Received: " + city_received);
                 Log.d("IntentData", "Rooms Received: " + rooms_received);

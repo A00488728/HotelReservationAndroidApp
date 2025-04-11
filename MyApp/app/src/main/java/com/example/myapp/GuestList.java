@@ -51,12 +51,14 @@ public class GuestList extends AppCompatActivity {
         String cityReceived = intent.getStringExtra("city_received");
         int roomsReceived = intent.getIntExtra("rooms_received", 0);
         int guestsReceived = intent.getIntExtra("guests_received", 0);
+        String checkindate = intent.getStringExtra("startDate");
+        String checkoutDate = intent.getStringExtra("endDate");
         Log.d("IntentReceived", "City Received: " + cityReceived);
         Log.d("IntentReceived", "Rooms Received: " + roomsReceived);
         Log.d("IntentReceived", "Guests Received: " + guestsReceived);
         Hotel selectedHotel = (Hotel) intent.getSerializableExtra("selected_hotel");
 
-        ReservationData reservation_data = new ReservationData("", guestsReceived, selectedHotel.getName(), "abcd", "efgh", reservationNumber, roomsReceived, cityReceived);
+        ReservationData reservation_data = new ReservationData("", guestsReceived, selectedHotel.getName(), checkoutDate, checkindate, reservationNumber, roomsReceived, cityReceived);
 
         itemList = new ArrayList<>();
         for (int i = 0; i < guestsReceived; i++) {

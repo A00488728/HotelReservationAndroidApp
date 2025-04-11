@@ -14,6 +14,11 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     Button showRangePicker;
@@ -39,9 +44,47 @@ public class MainActivity extends AppCompatActivity {
             dateRangePicker.show(getSupportFragmentManager(), "DATE_RANGE_PICKER");
         });
 
+        final String[] dates ={"", ""};
+
         // Handle the selected range
         dateRangePicker.addOnPositiveButtonClickListener(selection -> {
             // Format: Apr 9 – Apr 15
+            Long startDate = selection.first;
+            Long endDate = selection.second;
+
+            // Normalize the start date to midnight of the selected date (local timezone)
+            Calendar startCalendar = Calendar.getInstance();
+            startCalendar.setTimeInMillis(startDate);
+            startCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            startCalendar.set(Calendar.MINUTE, 0);
+            startCalendar.set(Calendar.SECOND, 0);
+            startCalendar.set(Calendar.MILLISECOND, 0);
+
+            // Add 1 day to the start date
+            startCalendar.add(Calendar.DAY_OF_YEAR, 1);
+
+            // Adjust the end date to midnight of the next day (local timezone)
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTimeInMillis(endDate);
+            endCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            endCalendar.set(Calendar.MINUTE, 0);
+            endCalendar.set(Calendar.SECOND, 0);
+            endCalendar.set(Calendar.MILLISECOND, 0);
+
+            // Add 1 day to the end date
+            endCalendar.add(Calendar.DAY_OF_YEAR, 1);
+
+            // Format the start and end dates to a string (you can customize the format)
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String startDateString = sdf.format(startCalendar.getTime());
+            String endDateString = sdf.format(endCalendar.getTime());
+
+            // Log the formatted date range
+            Log.d("DateRangePicker", "Formatted Start Date: " + startDateString);
+            Log.d("DateRangePicker", "Formatted End Date: " + endDateString);
+
+            dates[0] = startDateString;
+            dates[1] = endDateString;
             selectedRangeText.setText("Selected Range: " + dateRangePicker.getHeaderText());
         });
         Button btn = findViewById(R.id.HotelSearch);
@@ -79,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra("city_name_entered", city_name_entered);
                 i.putExtra("rooms", rooms);
                 i.putExtra("guests", guests);
+                i.putExtra("startDate", dates[0]);
+                i.putExtra("endDate", dates[1]);
                 Log.d("IntentData", "City Name Entered: " + city_name_entered);
                 Log.d("IntentData", "Rooms: " + rooms);
                 Log.d("IntentData", "Guests: " + guests);
