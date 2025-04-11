@@ -31,6 +31,8 @@ public class GuestList extends AppCompatActivity {
     private static final int CODE_LENGTH = 10;
     private static final SecureRandom random = new SecureRandom();
 
+    private String reservationNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +47,7 @@ public class GuestList extends AppCompatActivity {
             sb.append(CHARACTERS.charAt(index));
         }
 
-        String reservationNumber = sb.toString();
+        reservationNumber = sb.toString();
 
         Intent intent = getIntent();
         String cityReceived = intent.getStringExtra("city_received");
@@ -154,7 +156,9 @@ public class GuestList extends AppCompatActivity {
                     Toast.makeText(GuestList.this, "Data saved successfully", Toast.LENGTH_LONG).show();
                     // Navigate to the confirmation page
                     Intent showGuestList = new Intent(GuestList.this, ConfirmationPage.class);
+                    showGuestList.putExtra("reservationNumber", reservationNumber);
                     startActivity(showGuestList);
+                    //Intent showGuestList = new Intent(HotelList.this, GuestList.class);
                 } else {
                     Log.d("GuestList", "Failed to save data, response code: " + response.code());
                     Toast.makeText(GuestList.this, "Failed to save data", Toast.LENGTH_LONG).show();

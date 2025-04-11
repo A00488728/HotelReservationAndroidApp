@@ -45,13 +45,13 @@ public class ReservationDataController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<ReservationData> getReservationById(@PathVariable Long id) {
         Optional<ReservationData> reservation = reservationDataService.getReservationById(id);
         return reservation.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     
-    @GetMapping("/{reservationNumber}")
+    @GetMapping("/number/{reservationNumber}")
     public ResponseEntity<ReservationData> getReservationByReservationNumber(@PathVariable String reservationNumber) {
         Optional<ReservationData> reservation = reservationDataService.getReservationByReservationNumber(reservationNumber);
         return reservation.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());

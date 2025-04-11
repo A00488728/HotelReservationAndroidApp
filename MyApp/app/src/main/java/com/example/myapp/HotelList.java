@@ -5,92 +5,92 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HotelList extends AppCompatActivity {
 
     ListView listView;
     ArrayList<Hotel> hotelarraylist;
     private static MyCustomAdapter adapter;
+    private final Hotel[] selectedHotel = new Hotel[1]; // Use an array to allow mutation in lambdas
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hotel_list);
 
-        // Find the ListView by ID
-        listView = findViewById(R.id.HotelList);
-
-        hotelarraylist = new ArrayList<>();
-
-        // Sample data for the ListView
-        Hotel hotel1 = new Hotel("Halifax Hotel", "Halifax", "$123", "Available", "123km");
-        Hotel hotel2 = new Hotel("Halifax Hotel", "Halifax", "$123", "Available", "123km");
-        Hotel hotel3 = new Hotel("Halifax Hotel", "Halifax", "$123", "Available", "123km");
-
-        hotelarraylist.add(hotel1);
-        hotelarraylist.add(hotel2);
-        hotelarraylist.add(hotel3);
-
-        // Create an ArrayAdapter to bind the data to the ListView
-
-        adapter = new MyCustomAdapter(hotelarraylist, getApplicationContext());
-        // Set the adapter to the ListView
-        listView.setAdapter(adapter);
-
-        final Hotel[] hotel_selected = new Hotel[1];
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Grab the selected item
-                hotel_selected[0] = hotelarraylist.get(position);
-                // Do something with it (e.g., Toast or send to another activity)
-                Toast.makeText(getApplicationContext(), "Selected: " + hotel_selected[0], Toast.LENGTH_LONG).show();
-
-            }
-        });
-
-        Button bookbtn = findViewById(R.id.BookButton);
         Intent intentReceived = getIntent();
         String city_received = intentReceived.getStringExtra("city_name_entered");
         int rooms_received = intentReceived.getIntExtra("rooms", 0);
         int guests_received = intentReceived.getIntExtra("guests", 0);
         String checkinDate = intentReceived.getStringExtra("startDate");
         String checkoutDate = intentReceived.getStringExtra("endDate");
-        Log.d("IntentReceived", "City Received: " + city_received);
-        Log.d("IntentReceived", "Rooms Received: " + rooms_received);
-        Log.d("IntentReceived", "Guests Received: " + guests_received);
 
-        bookbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent showGuestList = new Intent(HotelList.this, GuestList.class);
-                showGuestList.putExtra("selected_hotel", hotel_selected[0]);
-                showGuestList.putExtra("city_received", city_received);
-                showGuestList.putExtra("rooms_received", rooms_received);
-                showGuestList.putExtra("guests_received", guests_received);
-                showGuestList.putExtra("startDate", checkinDate);
-                showGuestList.putExtra("endDate", checkoutDate);
-                Log.d("IntentData", "Hotel Selected: " + hotel_selected[0]);
-                Log.d("IntentData", "City Received: " + city_received);
-                Log.d("IntentData", "Rooms Received: " + rooms_received);
-                Log.d("IntentData", "Guests Received: " + guests_received);
-                startActivity(showGuestList);
+        listView = findViewById(R.id.HotelList);
+        Button bookbtn = findViewById(R.id.BookButton);
+
+        if (!city_received.isEmpty()) {
+            HotelSearchHelper.searchHotelsInCity(
+                    city_received,
+                    checkinDate,
+                    checkoutDate,
+                    guests_received,
+                    "0,17",
+                    rooms_received,
+                    "EUR",
+                    "en-us",
+                    new HotelSearchHelper.HotelSearchCallback() {
+                        @Override
+                        public void onHotelsFound(List<Hotel> hotelList) {
+                            runOnUiThread(() -> {
+                                hotelarraylist = new ArrayList<>(hotelList);
+                                adapter = new MyCustomAdapter(hotelarraylist, HotelList.this);
+                                listView.setAdapter(adapter);
+
+                                // Handle list item click
+                                listView.setOnItemClickListener((parent, view, position, id) -> {
+                                    selectedHotel[0] = hotelarraylist.get(position);
+                                    Toast.makeText(getApplicationContext(),
+                                            "Selected: " + selectedHotel[0].getName(),
+                                            Toast.LENGTH_LONG).show();
+                                });
+                            });
+                        }
+
+                        @Override
+                        public void onError(String errorMessage) {
+                            runOnUiThread(() ->
+                                    Toast.makeText(HotelList.this, "Error: " + errorMessage, Toast.LENGTH_LONG).show());
+                        }
+                    });
+        } else {
+            Toast.makeText(this, "Please enter a city name.", Toast.LENGTH_SHORT).show();
+        }
+
+        // Book button click
+        bookbtn.setOnClickListener(v -> {
+            if (selectedHotel[0] == null) {
+                Toast.makeText(HotelList.this, "Please select a hotel first.", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            Intent showGuestList = new Intent(HotelList.this, GuestList.class);
+            showGuestList.putExtra("selected_hotel", selectedHotel[0]);
+            showGuestList.putExtra("city_received", city_received);
+            showGuestList.putExtra("rooms_received", rooms_received);
+            showGuestList.putExtra("guests_received", guests_received);
+            showGuestList.putExtra("startDate", checkinDate);
+            showGuestList.putExtra("endDate", checkoutDate);
+
+            Log.d("IntentData", "Hotel Selected: " + selectedHotel[0].getName());
+            startActivity(showGuestList);
         });
-
-
     }
 }
