@@ -55,6 +55,18 @@ public class ReservationData {
 
 
 
+	public String getCheckoutDate() {
+		return checkoutDate;
+	}
+
+
+
+	public String getCheckinDate() {
+		return checkinDate;
+	}
+
+
+
 	public String getCity() {
 		return city;
 	}

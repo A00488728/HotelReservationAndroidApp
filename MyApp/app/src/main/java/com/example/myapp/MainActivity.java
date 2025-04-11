@@ -2,6 +2,7 @@ package com.example.myapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             EditText number_of_rooms = findViewById(R.id.enterNumberOfRooms);
             String number_of_rooms_entered = number_of_rooms.getText().toString();
             Integer guests=0, rooms=0;
-            if (city_name_entered.isBlank() || !city_name_entered.matches("[a-zA-Z]+"))
+            if (city_name_entered.trim().length()==0 || !city_name_entered.matches("[a-zA-Z ]+"))
             {
                 Toast.makeText(this, "Enter a valid Destination", Toast.LENGTH_LONG).show();
             }
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
                 i.putExtra("city_name_entered", city_name_entered);
                 i.putExtra("rooms", rooms);
                 i.putExtra("guests", guests);
+                Log.d("IntentData", "City Name Entered: " + city_name_entered);
+                Log.d("IntentData", "Rooms: " + rooms);
+                Log.d("IntentData", "Guests: " + guests);
                 startActivity(i);
             }
 

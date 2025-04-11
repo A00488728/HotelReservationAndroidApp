@@ -2,6 +2,7 @@ package com.example.myapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -62,10 +63,13 @@ public class HotelList extends AppCompatActivity {
         });
 
         Button bookbtn = findViewById(R.id.BookButton);
-        Intent intent = getIntent();
-        String city_received = intent.getStringExtra("city_name_entered");
-        int rooms_received = intent.getIntExtra("rooms", 0);
-        int guests_received = intent.getIntExtra("guests", 0);
+        Intent intentReceived = getIntent();
+        String city_received = intentReceived.getStringExtra("city_name_entered");
+        int rooms_received = intentReceived.getIntExtra("rooms", 0);
+        int guests_received = intentReceived.getIntExtra("guests", 0);
+        Log.d("IntentReceived", "City Received: " + city_received);
+        Log.d("IntentReceived", "Rooms Received: " + rooms_received);
+        Log.d("IntentReceived", "Guests Received: " + guests_received);
 
         bookbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +79,10 @@ public class HotelList extends AppCompatActivity {
                 showGuestList.putExtra("city_received", city_received);
                 showGuestList.putExtra("rooms_received", rooms_received);
                 showGuestList.putExtra("guests_received", guests_received);
+                Log.d("IntentData", "Hotel Selected: " + hotel_selected[0]);
+                Log.d("IntentData", "City Received: " + city_received);
+                Log.d("IntentData", "Rooms Received: " + rooms_received);
+                Log.d("IntentData", "Guests Received: " + guests_received);
                 startActivity(showGuestList);
             }
         });

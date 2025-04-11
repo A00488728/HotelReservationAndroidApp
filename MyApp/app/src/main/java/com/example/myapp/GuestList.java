@@ -47,8 +47,19 @@ public class GuestList extends AppCompatActivity {
 
         String reservationNumber = sb.toString();
 
+        Intent intent = getIntent();
+        String cityReceived = intent.getStringExtra("city_received");
+        int roomsReceived = intent.getIntExtra("rooms_received", 0);
+        int guestsReceived = intent.getIntExtra("guests_received", 0);
+        Log.d("IntentReceived", "City Received: " + cityReceived);
+        Log.d("IntentReceived", "Rooms Received: " + roomsReceived);
+        Log.d("IntentReceived", "Guests Received: " + guestsReceived);
+        Hotel selectedHotel = (Hotel) intent.getSerializableExtra("selected_hotel");
+
+        ReservationData reservation_data = new ReservationData("", guestsReceived, selectedHotel.getName(), "abcd", "efgh", reservationNumber, roomsReceived, cityReceived);
+
         itemList = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < guestsReceived; i++) {
             // You can set whether each item has its RadioButton selected or not
             itemList.add(new GuestDetails("", false, false, reservationNumber)); // All RadioButtons initially unselected
         }
@@ -60,6 +71,8 @@ public class GuestList extends AppCompatActivity {
             Log.d("RecyclerView", "Scroll range: " + recyclerView.computeVerticalScrollRange());
         });
 
+
+
         Button submitbtn = findViewById(R.id.submit);
         submitbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,14 +81,6 @@ public class GuestList extends AppCompatActivity {
                 int validate_done=0;
                 // Get guest details from the adapter
                 List<GuestDetails> inputs = adapter.getGuestDetails();
-
-                Intent intent = getIntent();
-                String cityReceived = intent.getStringExtra("city_name_entered");
-                int roomsReceived = intent.getIntExtra("rooms", 0);
-                int guestsReceived = intent.getIntExtra("guests", 0);
-                Hotel selectedHotel = (Hotel) intent.getSerializableExtra("selected_hotel");
-
-                ReservationData reservation_data = new ReservationData("", guestsReceived, selectedHotel.getName(), "", "", reservationNumber, roomsReceived, cityReceived);
 
                 Log.d("GuestList", "Guest details retrieved: " + inputs.size() + " items");
 
@@ -87,7 +92,7 @@ public class GuestList extends AppCompatActivity {
 
                 for (GuestDetails guest : inputs)
                 {
-                    if (!guest.getName().matches(("[a-zA-Z]+"))){
+                    if (guest.getName() == null || !guest.getName().matches("[a-zA-Z ]+") || guest.getName().trim().length() < 1){
                         Toast.makeText(GuestList.this, "Invalid guest name", Toast.LENGTH_LONG).show();
                         validate_done=0;
                         break;
