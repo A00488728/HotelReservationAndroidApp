@@ -9,4 +9,7 @@ import retrofit2.http.POST;
 public interface ApiInterface {
     @POST("api/guests")
     Call<Void> saveInputs(@Body List<GuestDetails> inputs);
+
+    @POST("/reservations")
+    Call<ReservationData> createReservation(@Body ReservationData reservationData);
 }

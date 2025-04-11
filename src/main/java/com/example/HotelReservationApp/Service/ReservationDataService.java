@@ -31,7 +31,9 @@ public class ReservationDataService {
     public Optional<ReservationData> getReservationById(Long id) {
         return reservationDataRepository.findById(id);
     }
-
+    public Optional<ReservationData> getReservationByReservationNumber(String reservationNumber) {
+        return reservationDataRepository.findByReservationNumber(reservationNumber);
+    }    
     public ReservationData updateReservation(Long id, ReservationData reservationData) {
         if (reservationDataRepository.existsById(id)) {
             reservationData.setId(id);

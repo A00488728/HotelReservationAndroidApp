@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDate;
 
 @Entity
 public class ReservationData {
@@ -16,23 +15,79 @@ public class ReservationData {
     private String confirmationNumber;
     private int guestNumber;
     private String hotelName;
-    private LocalDate checkoutDate;
-    private LocalDate checkinDate;
+    private String checkoutDate;
+    private String checkinDate;
+    private String reservationNumber;
+    private int roomQuantity;
+    private String city;
     
 
 	// Constructors
     public ReservationData() {
     }
 
-    public ReservationData(String confirmationNumber, int guestNumber, String hotelName, LocalDate checkoutDate, LocalDate checkinDate) {
-        this.confirmationNumber = confirmationNumber;
-        this.guestNumber = guestNumber;
-        this.hotelName = hotelName;
-        this.checkoutDate = checkoutDate;
-        this.checkinDate = checkinDate;
-    }
 
-    // Getters and Setters
+
+    public ReservationData(Long id, String confirmationNumber, int guestNumber, String hotelName, String checkoutDate,
+			String checkinDate, String reservationNumber, int roomQuantity, String city) {
+		super();
+		this.id = id;
+		this.confirmationNumber = confirmationNumber;
+		this.guestNumber = guestNumber;
+		this.hotelName = hotelName;
+		this.checkoutDate = checkoutDate;
+		this.checkinDate = checkinDate;
+		this.reservationNumber = reservationNumber;
+		this.roomQuantity = roomQuantity;
+		this.city = city;
+	}
+
+
+	public int getRoomQuantity() {
+		return roomQuantity;
+	}
+
+
+
+	public void setRoomQuantity(int roomQuantity) {
+		this.roomQuantity = roomQuantity;
+	}
+
+
+
+	public String getCity() {
+		return city;
+	}
+
+
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+
+
+	public void setCheckoutDate(String checkoutDate) {
+		this.checkoutDate = checkoutDate;
+	}
+
+
+
+	public void setCheckinDate(String checkinDate) {
+		this.checkinDate = checkinDate;
+	}
+
+
+
+	public String getReservationNumber() {
+		return reservationNumber;
+	}
+
+	public void setReservationNumber(String reservationNumber) {
+		this.reservationNumber = reservationNumber;
+	}
+
+	// Getters and Setters
     public Long getId() {
         return id;
     }
@@ -57,21 +112,6 @@ public class ReservationData {
 		this.guestNumber = guestNumber;
 	}
 
-	public LocalDate getCheckoutDate() {
-		return checkoutDate;
-	}
-
-	public void setCheckoutDate(LocalDate checkoutDate) {
-		this.checkoutDate = checkoutDate;
-	}
-
-	public LocalDate getCheckinDate() {
-		return checkinDate;
-	}
-
-	public void setCheckinDate(LocalDate checkinDate) {
-		this.checkinDate = checkinDate;
-	}
 
 	public String getHotelName() {
 		return hotelName;

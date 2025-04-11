@@ -1,8 +1,9 @@
 package com.example.myapp;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Hotel {
+public class Hotel implements Serializable {
     private String Name;
     private String City;
     private String Price;

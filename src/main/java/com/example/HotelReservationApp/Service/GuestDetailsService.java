@@ -12,13 +12,14 @@ import java.util.List;
 public class GuestDetailsService {
 
     private final GuestRepository inputRepository;
-
+    
     @Autowired
     public GuestDetailsService(GuestRepository inputRepository) {
         this.inputRepository = inputRepository;
     }
-
+    
     public void saveInputs(List<GuestDetails> inputs) {
+    	
         for (GuestDetails userInput : inputs) {
             AdditionalGuest inputEntity = new AdditionalGuest();
             inputEntity.setGuestName(userInput.getName());
@@ -30,7 +31,7 @@ public class GuestDetailsService {
             else
             	find_gender="Female";
             inputEntity.setGender(find_gender);
-            inputEntity.setReservationNumber(userInput.getConfirmationNumber());
+            inputEntity.setReservationNumber(userInput.getReservationNumber());
             inputRepository.save(inputEntity);
         }
     }

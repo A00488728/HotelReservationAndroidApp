@@ -45,12 +45,12 @@ public class GuestList extends AppCompatActivity {
             sb.append(CHARACTERS.charAt(index));
         }
 
-        String confirmationNumber = sb.toString();
+        String reservationNumber = sb.toString();
 
         itemList = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             // You can set whether each item has its RadioButton selected or not
-            itemList.add(new GuestDetails("", false, false, confirmationNumber)); // All RadioButtons initially unselected
+            itemList.add(new GuestDetails("", false, false, reservationNumber)); // All RadioButtons initially unselected
         }
 
         adapter = new MyRecyclerViewAdapter(itemList);
@@ -68,6 +68,15 @@ public class GuestList extends AppCompatActivity {
                 int validate_done=0;
                 // Get guest details from the adapter
                 List<GuestDetails> inputs = adapter.getGuestDetails();
+
+                Intent intent = getIntent();
+                String cityReceived = intent.getStringExtra("city_name_entered");
+                int roomsReceived = intent.getIntExtra("rooms", 0);
+                int guestsReceived = intent.getIntExtra("guests", 0);
+                Hotel selectedHotel = (Hotel) intent.getSerializableExtra("selected_hotel");
+
+                ReservationData reservation_data = new ReservationData("", guestsReceived, selectedHotel.getName(), "", "", reservationNumber, roomsReceived, cityReceived);
+
                 Log.d("GuestList", "Guest details retrieved: " + inputs.size() + " items");
 
                 // For debugging: Show the first and last names (if needed)
@@ -94,10 +103,31 @@ public class GuestList extends AppCompatActivity {
                 if (validate_done==1)
                 {
                     saveGuestDetails(inputs);
+                    sendUserToBackend(reservation_data);
                 }
-
             }
         });
+    }
+    private void sendUserToBackend(ReservationData user) {
+        ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
+        Call<ReservationData> call = apiInterface.createReservation(user);
+        call.enqueue(new Callback<ReservationData>() {
+            @Override
+            public void onResponse(Call<ReservationData> call, Response<ReservationData> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Long id = response.body().getId();
+                    Log.d("API_RESPONSE", "User saved with ID: " + id);
+                } else {
+                    Log.e("API_ERROR", "Failed to save user. HTTP Code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ReservationData> call, Throwable t) {
+                Log.e("API", "Error: " + t.getMessage());
+            }
+        });
+
     }
 
     // Method to save guest details to the server

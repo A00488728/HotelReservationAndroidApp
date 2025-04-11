@@ -33,6 +33,7 @@ public class AdditionalGuest
 	
 	//getters and setters
 	
+
 	public int getId() {
 		return id;
 	}
@@ -60,8 +61,8 @@ public class AdditionalGuest
 		this.guestName = guestName;
 	}
 
-	public void setReservationNumber(String confirmationNumber) {
-		this.reservationNumber = confirmationNumber;
+	public void setReservationNumber(String reservationNumber) {
+		this.reservationNumber = reservationNumber;
 		
 	}
 	

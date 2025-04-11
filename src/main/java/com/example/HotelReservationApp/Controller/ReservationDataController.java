@@ -50,6 +50,12 @@ public class ReservationDataController {
         Optional<ReservationData> reservation = reservationDataService.getReservationById(id);
         return reservation.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    
+    @GetMapping("/{reservationNumber}")
+    public ResponseEntity<ReservationData> getReservationByReservationNumber(@PathVariable String reservationNumber) {
+        Optional<ReservationData> reservation = reservationDataService.getReservationByReservationNumber(reservationNumber);
+        return reservation.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<ReservationData> updateReservation(

@@ -2,8 +2,14 @@
 package com.example.HotelReservationApp.Repository;
 
 import com.example.HotelReservationApp.Entity.ReservationData;
+
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReservationRepository extends JpaRepository<ReservationData, Long> {
 	ReservationData findTopByOrderByIdDesc();
+
+	Optional<ReservationData> findByConfirmationNumber(String confirmationNumber);
+	Optional<ReservationData> findByReservationNumber(String reservationNumber);
 }

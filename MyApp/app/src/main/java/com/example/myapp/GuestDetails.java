@@ -5,21 +5,21 @@ public class GuestDetails {
     private Boolean male;
     private Boolean female;
 
-    private String confirmationNumber;
+    private String reservationNumber;
 
     public String getConfirmationNumber() {
-        return confirmationNumber;
+        return reservationNumber;
     }
 
-    public void setConfirmationNumber(String confirmationNumber) {
-        this.confirmationNumber = confirmationNumber;
+    public void setReservationNumber(String reservationNumber) {
+        this.reservationNumber = reservationNumber;
     }
 
-    public GuestDetails(String name, Boolean male, Boolean female, String confirmationNumber) {
+    public GuestDetails(String name, Boolean male, Boolean female, String reservationNumber) {
         this.name = name;
         this.male = male;
         this.female = female;
-        this.confirmationNumber = confirmationNumber;
+        this.reservationNumber = reservationNumber;
     }
 
     public String getName() {
