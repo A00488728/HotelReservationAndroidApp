@@ -24,31 +24,33 @@ import retrofit2.Response;
 
 public class GuestList extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private MyRecyclerViewAdapter adapter;
-    private List<GuestDetails> itemList;
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    private static final int CODE_LENGTH = 10;
-    private static final SecureRandom random = new SecureRandom();
+    private RecyclerView recyclerView;  // RecyclerView to display the list of guests
+    private MyRecyclerViewAdapter adapter;  // Adapter for the RecyclerView
+    private List<GuestDetails> itemList;  // List to store guest details
+    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";  // Characters for reservation code generation
+    private static final int CODE_LENGTH = 10;  // Length of reservation code
+    private static final SecureRandom random = new SecureRandom();  // SecureRandom for generating random reservation code
 
-    private String reservationNumber;
+    private String reservationNumber;  // Reservation number for the booking
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guest_list);
+        setContentView(R.layout.activity_guest_list);  // Set the layout for the activity
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = findViewById(R.id.recyclerView);  // Initialize RecyclerView
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));  // Set layout manager for RecyclerView
 
+        // Generate a random reservation number
         StringBuilder sb = new StringBuilder(CODE_LENGTH);
         for (int i = 0; i < CODE_LENGTH; i++) {
-            int index = random.nextInt(CHARACTERS.length());
-            sb.append(CHARACTERS.charAt(index));
+            int index = random.nextInt(CHARACTERS.length());  // Pick random index from CHARACTERS string
+            sb.append(CHARACTERS.charAt(index));  // Append character to the reservation number
         }
 
-        reservationNumber = sb.toString();
+        reservationNumber = sb.toString();  // Assign the generated reservation number
 
+        // Retrieve intent data from the previous activity
         Intent intent = getIntent();
         String cityReceived = intent.getStringExtra("city_received");
         int roomsReceived = intent.getIntExtra("rooms_received", 0);
@@ -58,31 +60,36 @@ public class GuestList extends AppCompatActivity {
         Log.d("IntentReceived", "City Received: " + cityReceived);
         Log.d("IntentReceived", "Rooms Received: " + roomsReceived);
         Log.d("IntentReceived", "Guests Received: " + guestsReceived);
-        Hotel selectedHotel = (Hotel) intent.getSerializableExtra("selected_hotel");
+        Hotel selectedHotel = (Hotel) intent.getSerializableExtra("selected_hotel");  // Retrieve selected hotel object
 
+        // Create ReservationData object to store reservation details
         ReservationData reservation_data = new ReservationData("", guestsReceived, selectedHotel.getName(), checkoutDate, checkindate, reservationNumber, roomsReceived, cityReceived);
 
+        // Initialize itemList with GuestDetails objects (empty for now)
         itemList = new ArrayList<>();
         for (int i = 0; i < guestsReceived; i++) {
-            // You can set whether each item has its RadioButton selected or not
-            itemList.add(new GuestDetails("", false, false, reservationNumber)); // All RadioButtons initially unselected
+            // Add a guest with no name, unselected gender, and reservation number
+            itemList.add(new GuestDetails("", false, false, reservationNumber));  // All RadioButtons initially unselected
         }
 
+        // Set up the RecyclerView adapter
         adapter = new MyRecyclerViewAdapter(itemList);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);  // Attach the adapter to the RecyclerView
+
+        // Log RecyclerView height and scroll range (for debugging purposes)
         recyclerView.post(() -> {
             Log.d("RecyclerView", "Total height: " + recyclerView.getHeight());
             Log.d("RecyclerView", "Scroll range: " + recyclerView.computeVerticalScrollRange());
         });
 
-
-
+        // Set up the Submit button click listener
         Button submitbtn = findViewById(R.id.submit);
         submitbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("GuestList", "Submit button clicked");
-                int validate_done=0;
+                int validate_done = 0;  // Validation flag
+
                 // Get guest details from the adapter
                 List<GuestDetails> inputs = adapter.getGuestDetails();
 
@@ -94,37 +101,40 @@ public class GuestList extends AppCompatActivity {
                     Log.d("GuestList", "Last guest name: " + inputs.get(inputs.size() - 1).getName());
                 }
 
-                for (GuestDetails guest : inputs)
-                {
-                    if (guest.getName() == null || !guest.getName().matches("[a-zA-Z ]+") || guest.getName().trim().length() < 1){
+                // Validate each guest's input
+                for (GuestDetails guest : inputs) {
+                    // Check if the name is invalid (empty or contains invalid characters)
+                    if (guest.getName() == null || !guest.getName().matches("[a-zA-Z ]+") || guest.getName().trim().length() < 1) {
                         Toast.makeText(GuestList.this, "Invalid guest name", Toast.LENGTH_LONG).show();
-                        validate_done=0;
+                        validate_done = 0;  // Set validation flag to 0 if validation fails
                         break;
-                    } else if (!guest.getFemale() && !guest.getMale()) {
+                    } else if (!guest.getFemale() && !guest.getMale()) {  // Check if gender is not selected
                         Toast.makeText(GuestList.this, "Guest gender not entered", Toast.LENGTH_LONG).show();
-                        validate_done=0;
+                        validate_done = 0;
                         break;
+                    } else {
+                        validate_done = 1;  // Validation passed
                     }
-                    else
-                        validate_done=1;
                 }
-                // Call the method to save data
-                if (validate_done==1)
-                {
-                    saveGuestDetails(inputs);
-                    sendUserToBackend(reservation_data);
+
+                // If validation is successful, save the guest details and send the reservation data to the backend
+                if (validate_done == 1) {
+                    saveGuestDetails(inputs);  // Save guest details
+                    sendUserToBackend(reservation_data);  // Send reservation data to the backend
                 }
             }
         });
     }
+
+    // Method to send reservation data to the backend API
     private void sendUserToBackend(ReservationData user) {
-        ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-        Call<ReservationData> call = apiInterface.createReservation(user);
+        ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);  // Create API interface
+        Call<ReservationData> call = apiInterface.createReservation(user);  // Call the API to create a reservation
         call.enqueue(new Callback<ReservationData>() {
             @Override
             public void onResponse(Call<ReservationData> call, Response<ReservationData> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Long id = response.body().getId();
+                    Long id = response.body().getId();  // Get the reservation ID
                     Log.d("API_RESPONSE", "User saved with ID: " + id);
                 } else {
                     Log.e("API_ERROR", "Failed to save user. HTTP Code: " + response.code());
@@ -133,18 +143,17 @@ public class GuestList extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ReservationData> call, Throwable t) {
-                Log.e("API", "Error: " + t.getMessage());
+                Log.e("API", "Error: " + t.getMessage());  // Log API failure
             }
         });
-
     }
 
     // Method to save guest details to the server
     private void saveGuestDetails(List<GuestDetails> input) {
         Log.d("GuestList", "Starting API call to save guest details");
 
-        ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);
-        Call<Void> call = apiInterface.saveInputs(input);
+        ApiInterface apiInterface = ApiClient.getRetrofitInstance().create(ApiInterface.class);  // Create API interface
+        Call<Void> call = apiInterface.saveInputs(input);  // Call the API to save guest details
 
         call.enqueue(new Callback<Void>() {
             @Override
@@ -154,11 +163,10 @@ public class GuestList extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Log.d("GuestList", "Data saved successfully");
                     Toast.makeText(GuestList.this, "Data saved successfully", Toast.LENGTH_LONG).show();
-                    // Navigate to the confirmation page
+                    // Navigate to the confirmation page with reservation number
                     Intent showGuestList = new Intent(GuestList.this, ConfirmationPage.class);
-                    showGuestList.putExtra("reservationNumber", reservationNumber);
+                    showGuestList.putExtra("reservationNumber", reservationNumber);  // Pass reservation number
                     startActivity(showGuestList);
-                    //Intent showGuestList = new Intent(HotelList.this, GuestList.class);
                 } else {
                     Log.d("GuestList", "Failed to save data, response code: " + response.code());
                     Toast.makeText(GuestList.this, "Failed to save data", Toast.LENGTH_LONG).show();
@@ -167,7 +175,7 @@ public class GuestList extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("GuestList", "API call failed", t);
+                Log.e("GuestList", "API call failed", t);  // Log API failure
                 Toast.makeText(GuestList.this, "Network error", Toast.LENGTH_LONG).show();
             }
         });

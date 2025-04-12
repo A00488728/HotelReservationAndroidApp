@@ -14,20 +14,19 @@
         style="@style/HeaderTextStyle" />
 
     <TextView
-        android:id="@+id/confirmationNumber"
+        android:id="@+id/confirmationNumberTextView"
+        android:layout_marginTop="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:fontFamily="serif"
-        android:text="Your confirmation number is "
         android:layout_gravity="center_horizontal"
+        android:text=""
         android:textSize="20sp" />
 
     <!-- Button to perform action -->
     <Button
         android:id="@+id/Return"
         style="@style/CustomButtonStyle"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:text="Return to the Home page"
         android:layout_gravity="center_horizontal"/>
 

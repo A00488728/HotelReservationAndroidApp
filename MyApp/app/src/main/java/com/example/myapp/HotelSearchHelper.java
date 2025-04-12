@@ -12,27 +12,34 @@ import java.util.Locale;
 
 public class HotelSearchHelper {
 
-    private static final String GOOGLE_API_KEY = "AIzaSyDtKygX50O9YMc-iGd1TqXC3iEvGQm18aQ"; // Add your Google API key here
-    private static final String RAPIDAPI_KEY = "7370eb07b8mshb7849cba0f07efbp127cbbjsnd35d7480b4af"; // Add your RapidAPI key here
+    // Google Maps Geocoding API key (used to get coordinates from city name)
+    private static final String GOOGLE_API_KEY = "AIzaSyDtKygX50O9YMc-iGd1TqXC3iEvGQm18aQ";
 
+    // RapidAPI key for accessing the Booking.com API
+    private static final String RAPIDAPI_KEY = "7370eb07b8mshb7849cba0f07efbp127cbbjsnd35d7480b4af";
+
+    // OkHttpClient instance for making HTTP requests
     private static final OkHttpClient client = new OkHttpClient();
 
+    // Callback interface to return results asynchronously
     public interface HotelSearchCallback {
-        void onHotelsFound(List<Hotel> hotels);  // Now returns a list of HotelItem objects
-        void onError(String errorMessage);
+        void onHotelsFound(List<Hotel> hotels);  // Called when hotel list is successfully retrieved
+        void onError(String errorMessage);       // Called on failure
     }
 
-    // Step 1: Get coordinates of the city
+    /**
+     * Step 1: Get coordinates (lat, lng) of a city using Google Maps Geocoding API
+     */
     public static void searchHotelsInCity(String city, String arrivalDate, String departureDate,
                                           int adults, String childrenAge, int roomQty,
                                           String currencyCode, String languageCode, HotelSearchCallback callback) {
 
-        // Google API URL to get the coordinates
+        // Build URL for Google Geocoding API
         String geoUrl = String.format(Locale.US,
                 "https://maps.googleapis.com/maps/api/geocode/json?address=%s&key=%s",
                 city, GOOGLE_API_KEY);
 
-        // Make the request to Google Maps API
+        // Make asynchronous request to Google API
         Request request = new Request.Builder().url(geoUrl).build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -44,6 +51,7 @@ public class HotelSearchHelper {
 
                 String responseBody = response.body().string();
                 try {
+                    // Parse response JSON to extract latitude and longitude
                     JSONObject json = new JSONObject(responseBody);
                     JSONArray results = json.getJSONArray("results");
                     JSONObject location = results.getJSONObject(0)
@@ -53,7 +61,7 @@ public class HotelSearchHelper {
                     double latitude = location.getDouble("lat");
                     double longitude = location.getDouble("lng");
 
-                    // Step 2: Fetch hotels by coordinates
+                    // Step 2: Use lat/lng to fetch nearby hotels
                     fetchHotelsByCoordinates(latitude, longitude, arrivalDate, departureDate,
                             adults, childrenAge, roomQty, currencyCode, languageCode, callback);
 
@@ -68,12 +76,14 @@ public class HotelSearchHelper {
         });
     }
 
-    // Step 2: Booking API - Fetch hotels by coordinates
+    /**
+     * Step 2: Fetch hotel listings from Booking API using latitude & longitude
+     */
     private static void fetchHotelsByCoordinates(double latitude, double longitude, String arrivalDate, String departureDate,
                                                  int adults, String childrenAge, int roomQty, String currencyCode, String languageCode,
                                                  HotelSearchCallback callback) {
 
-        // URL for Booking API (using RapidAPI)
+        // Build URL with query parameters for Booking API via RapidAPI
         HttpUrl url = HttpUrl.parse("https://booking-com15.p.rapidapi.com/api/v1/hotels/searchHotelsByCoordinates")
                 .newBuilder()
                 .addQueryParameter("latitude", String.valueOf(latitude))
@@ -91,14 +101,15 @@ public class HotelSearchHelper {
                 .addQueryParameter("location", "US")
                 .build();
 
+        // Set headers and initiate the request
         Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .addHeader("x-rapidapi-host", "booking-com15.p.rapidapi.com")
-                .addHeader("x-rapidapi-key", RAPIDAPI_KEY) // Add your RapidAPI key here
+                .addHeader("x-rapidapi-key", RAPIDAPI_KEY)
                 .build();
 
-        // Make the request to Booking API
+        // Make asynchronous request to Booking API
         client.newCall(request).enqueue(new Callback() {
             public void onResponse(Call call, Response response) throws IOException {
                 if (!response.isSuccessful()) {
@@ -108,42 +119,44 @@ public class HotelSearchHelper {
 
                 String responseBody = response.body().string();
                 try {
+                    // Parse the response JSON
                     JSONObject json = new JSONObject(responseBody);
                     JSONArray hotels = json.getJSONObject("data").getJSONArray("result");
 
                     List<Hotel> hotelList = new ArrayList<>();
+
+                    // Loop through the first 5 hotel results
                     for (int i = 0; i < Math.min(5, hotels.length()); i++) {
                         JSONObject hotel = hotels.getJSONObject(i);
 
-                        // Extracting hotel details
+                        // Extract hotel info
                         String hotelName = hotel.optString("hotel_name", "N/A");
                         String city = hotel.optString("city", "N/A");
 
+                        // Extract price info if available
                         JSONObject priceBreakdown = hotel.optJSONObject("composite_price_breakdown");
-                        Log.d("HotelDebug", "priceBreakdown: " + (priceBreakdown != null ? priceBreakdown.toString() : "null"));
-
                         JSONObject grossAmount = priceBreakdown != null ? priceBreakdown.optJSONObject("gross_amount_hotel_currency") : null;
-                        Log.d("HotelDebug", "grossAmount: " + (grossAmount != null ? grossAmount.toString() : "null"));
 
                         double price = grossAmount != null ? grossAmount.optDouble("value", 0.0) : 0.0;
-                        Log.d("HotelDebug", "Extracted price: " + price);
-
                         String currency = grossAmount != null ? grossAmount.optString("currency", "") : "";
-                        Log.d("HotelDebug", "Extracted currency: " + currency);
-
                         String priceWithCurrency = String.format("%s %.2f", currency, price);
-                        Log.d("HotelDebug", "Formatted priceWithCurrency: " + priceWithCurrency);
 
-
-
+                        // Check hotel availability
                         boolean isAvailable = !"1".equals(hotel.optString("soldout", "0"));
-                        double distance = calculateDistance(latitude, longitude, hotel.optDouble("latitude", latitude), hotel.optDouble("longitude", longitude));
 
+                        // Calculate distance from user-specified coordinates
+                        double distance = calculateDistance(latitude, longitude,
+                                hotel.optDouble("latitude", latitude),
+                                hotel.optDouble("longitude", longitude));
                         String formattedDistance = String.format("Distance: %.2f km", distance);
-                        hotelList.add(new Hotel(hotelName, city, priceWithCurrency, "Available", formattedDistance));
+
+                        // Add hotel to result list
+                        hotelList.add(new Hotel(hotelName, city, priceWithCurrency,
+                                isAvailable ? "Available" : "Sold Out", formattedDistance));
                     }
 
-                    callback.onHotelsFound(hotelList); // Send the list back to callback
+                    // Pass results to callback
+                    callback.onHotelsFound(hotelList);
 
                 } catch (Exception e) {
                     callback.onError("Error parsing hotel data");
@@ -156,15 +169,18 @@ public class HotelSearchHelper {
         });
     }
 
-    // Haversine formula to calculate the distance between two geographical points
+    /**
+     * Utility method: Calculate distance between two geographic coordinates
+     * Uses Haversine formula
+     */
     private static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        final int R = 6371; // Earth radius in km
+        final int R = 6371; // Radius of Earth in kilometers
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) +
                 Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
                         Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c; // Result in km
+        return R * c; // Return distance in kilometers
     }
 }
