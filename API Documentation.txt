@@ -1,0 +1,79 @@
+# there are 3 main APIs used in this project
+
+base URL
+Deployed URL	https://lit-river-27245-589367aa3742.herokuapp.com/
+Local URL	http://10.0.2.2:8080/
+
+APIs
+
+#api/guests
+1. When the final confirm button is clicked, guests are added to the Additional_Guests table
+2. In order to test this API we can send the following requests from POSTMAN
+	a) Send a POST request with the following data. This API expects an array of json inputs/guest information
+		i)[
+    			{
+        			"reservationNumber": "43FK19Z315",
+        			"guestName": "Mrittika",
+        			"gender": "Male"
+    			}
+		  ]
+		ii) It will send a 200 response
+	b) Send a GET request at the URL, it will get the following response
+		i) 200 ok response
+		ii) [
+    			{
+        			"id": 1,
+				"reservationNumber": "43FK19Z315",
+        			"guestName": "Mrittika",
+        			"gender": "Male"
+    			}
+		    ]
+
+#reservations
+1. When the final confirm button is clicked, all the reservation related data is stored on the ReseravationData table. 
+2. To test this API we can send the following requests.
+	a) POST request
+		{
+		    "confirmationNumber": "RFKPVYQQW5",
+    		    "guestNumber": 1,
+    		    "hotelName": "Days Inn & Suites by Wyndham Strathmore",
+    		    "checkoutDate": "2025-04-27",
+    		    "checkinDate": "2025-04-20",
+    		    "reservationNumber": "THS4CFDMOE",
+    		    "roomQuantity": 1,
+    		    "city": "Calgary"
+  		}
+	b) GET request will give the following data
+		[
+  			{
+    				"id": 1,
+    				"confirmationNumber": "RFKPVYQQW5",
+   				"guestNumber": 1,
+    				"hotelName": "Days Inn & Suites by Wyndham Strathmore",
+    				"checkoutDate": "2025-04-27",
+    				"checkinDate": "2025-04-20",
+    				"reservationNumber": "THS4CFDMOE",
+    				"roomQuantity": 1,
+    				"city": "Calgary"
+  			}
+		]
+
+
+#reservations/number/{reservationNumber}
+1. We use this API to retrieve the confirmation number from the back end and display it at the frontend
+2. We only use GET request on this
+3. We must use a valid reservationNumber to get results
+	a) GET request results will be something like
+
+{
+  "id": 1,
+  "confirmationNumber": "RFKPVYQQW5",
+  "guestNumber": 1,
+  "hotelName": "Days Inn & Suites by Wyndham Strathmore",
+  "checkoutDate": "2025-04-27",
+  "checkinDate": "2025-04-20",
+  "reservationNumber": "THS4CFDMOE",
+  "roomQuantity": 1,
+  "city": "Calgary"
+}
+
