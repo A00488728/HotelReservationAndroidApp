@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.security.SecureRandom;
 
@@ -38,6 +39,33 @@ public class GuestList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_list);  // Set the layout for the activity
 
+        Intent intent = getIntent();
+        String cityReceived = intent.getStringExtra("city_received");
+        int roomsReceived = intent.getIntExtra("rooms_received", 0);
+        int guestsReceived = intent.getIntExtra("guests_received", 0);
+        String checkindate = intent.getStringExtra("startDate");
+        String checkoutDate = intent.getStringExtra("endDate");
+        Log.d("IntentReceived", "City Received: " + cityReceived);
+        Log.d("IntentReceived", "Rooms Received: " + roomsReceived);
+        Log.d("IntentReceived", "Guests Received: " + guestsReceived);
+        Hotel selectedHotel = (Hotel) intent.getSerializableExtra("selected_hotel");  // Retrieve selected hotel object
+
+        String AddString ="Hotel Name: ";
+        TextView HotelName = findViewById(R.id.name);
+        HotelName.setText(AddString + selectedHotel.getName());
+
+        AddString = "Check in date: ";
+        TextView CheckinDate = findViewById(R.id.checkinDate);
+        CheckinDate.setText(AddString + checkindate);
+
+        AddString = "Check out date: ";
+        TextView CheckoutDate = findViewById(R.id.checkoutDate);
+        CheckoutDate.setText(AddString + checkoutDate);
+
+        AddString ="Hotel Price: ";
+        TextView HotelPrice = findViewById(R.id.price);
+        HotelPrice.setText(AddString + selectedHotel.getPrice());
+
         recyclerView = findViewById(R.id.recyclerView);  // Initialize RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));  // Set layout manager for RecyclerView
 
@@ -51,16 +79,7 @@ public class GuestList extends AppCompatActivity {
         reservationNumber = sb.toString();  // Assign the generated reservation number
 
         // Retrieve intent data from the previous activity
-        Intent intent = getIntent();
-        String cityReceived = intent.getStringExtra("city_received");
-        int roomsReceived = intent.getIntExtra("rooms_received", 0);
-        int guestsReceived = intent.getIntExtra("guests_received", 0);
-        String checkindate = intent.getStringExtra("startDate");
-        String checkoutDate = intent.getStringExtra("endDate");
-        Log.d("IntentReceived", "City Received: " + cityReceived);
-        Log.d("IntentReceived", "Rooms Received: " + roomsReceived);
-        Log.d("IntentReceived", "Guests Received: " + guestsReceived);
-        Hotel selectedHotel = (Hotel) intent.getSerializableExtra("selected_hotel");  // Retrieve selected hotel object
+
 
         // Create ReservationData object to store reservation details
         ReservationData reservation_data = new ReservationData("", guestsReceived, selectedHotel.getName(), checkoutDate, checkindate, reservationNumber, roomsReceived, cityReceived);

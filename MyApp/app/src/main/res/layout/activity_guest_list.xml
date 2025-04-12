@@ -18,16 +18,51 @@
         android:layout_marginTop="30dp" />
 
     <TextView
-        android:id="@+id/Header6"
+        android:id="@+id/name"
         app:layout_constraintTop_toBottomOf="@id/Header3"
+        app:layout_constraintBottom_toTopOf="@id/price"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/DisplayText"/>
+
+    <TextView
+        android:id="@+id/checkinDate"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintBottom_toTopOf="@id/checkoutDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/DisplayText"/>
+
+    <TextView
+        android:id="@+id/checkoutDate"
+        app:layout_constraintTop_toBottomOf="@id/checkinDate"
+        app:layout_constraintBottom_toTopOf="@id/price"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/DisplayText" />
+
+    <TextView
+        android:id="@+id/price"
+        app:layout_constraintTop_toBottomOf="@id/checkoutDate"
+        app:layout_constraintBottom_toTopOf="@id/Header6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/DisplayText"/>
+
+
+
+    <TextView
+        android:id="@+id/Header6"
+        app:layout_constraintTop_toBottomOf="@id/price"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="Enter Guest Details"
+        android:gravity="center"
         android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="40dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
